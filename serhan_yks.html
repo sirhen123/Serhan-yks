@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Serhan – YKS 2026</title>
+<meta name="theme-color" content="#080810">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Serhan YKS">
+<link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080810;
+  --s1: #0f0f1c;
+  --s2: #161625;
+  --s3: #1e1e32;
+  --s4: #252540;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text: #eeeef8;
+  --muted: #7070a0;
+  --muted2: #4a4a70;
+
+  --p: #8b5cf6;
+  --p2: #a78bfa;
+  --p3: #c4b5fd;
+  --pdim: rgba(139,92,246,0.18);
+  --pdim2: rgba(139,92,246,0.08);
+
+  --t: #06b6d4;
+  --t2: #22d3ee;
+  --tdim: rgba(6,182,212,0.15);
+
+  --g: #10b981;
+  --g2: #34d399;
+  --gdim: rgba(16,185,129,0.15);
+
+  --o: #f59e0b;
+  --o2: #fbbf24;
+  --odim: rgba(245,158,11,0.15);
+
+  --r: #ef4444;
+  --r2: #f87171;
+  --rdim: rgba(239,68,68,0.15);
+
+  --pk: #ec4899;
+  --pk2: #f472b6;
+  --pkdim: rgba(236,72,153,0.15);
+
+  --bl: #3b82f6;
+  --bl2: #60a5fa;
+  --bldim: rgba(59,130,246,0.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  max-width:480px;
+  margin:0 auto;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* AMBIENT BG */
+body::before {
+  content:'';
+  position:fixed;
+  top:-200px; left:-100px;
+  width:400px; height:400px;
+  background:radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%);
+  pointer-events:none; z-index:0;
+}
+body::after {
+  content:'';
+  position:fixed;
+  bottom:-150px; right:-100px;
+  width:350px; height:350px;
+  background:radial-gradient(circle, rgba(6,182,212,0.09) 0%, transparent 70%);
+  pointer-events:none; z-index:0;
+}
+
+/* HEADER */
+.app-header {
+  position:sticky; top:0; z-index:100;
+  background:rgba(8,8,16,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:14px 16px 0;
+}
+.header-top {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:12px;
+}
+.header-logo {
+  font-family:'Syne',sans-serif;
+  font-size:18px; font-weight:800;
+  letter-spacing:-0.5px;
+}
+.header-logo span { color:var(--p2); }
+.header-streak {
+  display:flex; align-items:center; gap:6px;
+  background:var(--odim);
+  border:1px solid rgba(245,158,11,0.2);
+  border-radius:20px; padding:5px 10px;
+  font-size:12px; font-weight:600; color:var(--o2);
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display:flex; gap:0;
+  border-bottom:1px solid var(--border);
+  margin:0 -16px;
+}
+.nav-tab {
+  flex:1; padding:10px 4px 12px;
+  background:none; border:none;
+  color:var(--muted); font-family:'DM Sans',sans-serif;
+  font-size:11px; font-weight:600;
+  letter-spacing:0.3px;
+  cursor:pointer; border-bottom:2px solid transparent;
+  transition:all 0.2s; display:flex;
+  flex-direction:column; align-items:center; gap:3px;
+}
+.nav-tab .tab-icon { font-size:16px; }
+.nav-tab.active { color:var(--p2); border-bottom-color:var(--p); }
+.nav-tab:hover:not(.active) { color:var(--text); }
+
+/* PAGES */
+.page { display:none; padding:16px 16px 100px; position:relative; z-index:1; }
+.page.active { display:block; }
+
+/* DATE NAV */
+.date-nav {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:16px;
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:16px; padding:10px 12px;
+}
+.date-nav-btn {
+  width:34px; height:34px; border-radius:10px;
+  background:var(--s3); border:1px solid var(--border2);
+  color:var(--text); font-size:18px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s; flex-shrink:0;
+}
+.date-nav-btn:active { transform:scale(0.92); background:var(--s4); }
+.date-center { flex:1; text-align:center; }
+.date-main { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; }
+.date-day { font-size:11px; color:var(--muted); margin-top:1px; }
+
+/* PROGRESS CARD */
+.progress-card {
+  background:linear-gradient(135deg, var(--s2) 0%, var(--s1) 100%);
+  border:1px solid var(--border2);
+  border-radius:20px; padding:18px;
+  margin-bottom:16px;
+  position:relative; overflow:hidden;
+}
+.progress-card::before {
+  content:'';
+  position:absolute; top:-30px; right:-30px;
+  width:120px; height:120px;
+  background:radial-gradient(circle, var(--pdim) 0%, transparent 70%);
+}
+.progress-top {
+  display:flex; justify-content:space-between; align-items:flex-start;
+  margin-bottom:14px;
+}
+.progress-label { font-size:12px; color:var(--muted); font-weight:500; margin-bottom:4px; }
+.progress-num { font-family:'Syne',sans-serif; font-size:32px; font-weight:800; color:var(--p3); line-height:1; }
+.progress-sub { font-size:12px; color:var(--muted); margin-top:2px; }
+.progress-circle-wrap { position:relative; width:64px; height:64px; }
+.progress-circle-wrap svg { transform:rotate(-90deg); }
+.progress-circle-text {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600;
+  color:var(--p2);
+}
+.progress-bar-row {
+  height:6px; background:var(--s4); border-radius:3px; overflow:hidden;
+  margin-bottom:10px;
+}
+.progress-bar-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--p), var(--t));
+  border-radius:3px; transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.progress-chips { display:flex; gap:8px; flex-wrap:wrap; }
+.chip {
+  display:inline-flex; align-items:center; gap:4px;
+  font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px;
+}
+.chip-done { background:var(--gdim); color:var(--g2); border:1px solid rgba(16,185,129,0.2); }
+.chip-rem { background:var(--odim); color:var(--o2); border:1px solid rgba(245,158,11,0.2); }
+.chip-pct { background:var(--pdim); color:var(--p2); border:1px solid rgba(139,92,246,0.2); }
+
+/* TASK ITEMS */
+.tasks-section { margin-bottom:20px; }
+.tasks-section-label {
+  font-size:10px; font-weight:700; letter-spacing:1.2px;
+  color:var(--muted2); text-transform:uppercase;
+  margin-bottom:8px; padding-left:4px;
+}
+.task-card {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:14px 14px;
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:all 0.15s;
+  position:relative; overflow:hidden;
+}
+.task-card::before {
+  content:'';
+  position:absolute; left:0; top:0; bottom:0;
+  width:3px; border-radius:3px 0 0 3px;
+}
+.task-card:active { transform:scale(0.98); }
+.task-card.done { opacity:0.5; }
+.task-card.done .task-name { text-decoration:line-through; }
+
+/* Category colors */
+.cat-edb .task-card::before { background:var(--p); }
+.cat-edb .task-check-box { border-color:var(--p); }
+.cat-edb.task-card.done .task-check-box { background:var(--p); border-color:var(--p); }
+
+.cat-fen .task-card::before { background:var(--t); }
+.cat-fen .task-check-box { border-color:var(--t); }
+.cat-fen.task-card.done .task-check-box { background:var(--t); border-color:var(--t); }
+
+.cat-mat .task-card::before { background:var(--g); }
+.cat-mat .task-check-box { border-color:var(--g); }
+.cat-mat.task-card.done .task-check-box { background:var(--g); border-color:var(--g); }
+
+.cat-tytmat .task-card::before { background:var(--g2); }
+.cat-tytmat .task-check-box { border-color:var(--g2); }
+.cat-tytmat.task-card.done .task-check-box { background:var(--g2); border-color:var(--g2); }
+
+.cat-turkce .task-card::before { background:var(--bl); }
+.cat-turkce .task-check-box { border-color:var(--bl); }
+.cat-turkce.task-card.done .task-check-box { background:var(--bl); border-color:var(--bl); }
+
+.cat-tarih .task-card::before { background:var(--o); }
+.cat-tarih .task-check-box { border-color:var(--o); }
+.cat-tarih.task-card.done .task-check-box { background:var(--o); border-color:var(--o); }
+
+.cat-deneme-tyt .task-card::before, .cat-deneme-ayt .task-card::before { background:var(--r); }
+.cat-deneme-tyt .task-check-box, .cat-deneme-ayt .task-check-box { border-color:var(--r); }
+.cat-deneme-tyt.task-card.done .task-check-box, .cat-deneme-ayt.task-card.done .task-check-box { background:var(--r); border-color:var(--r); }
+
+.cat-spor .task-card::before { background:var(--pk); }
+.cat-spor .task-check-box { border-color:var(--pk); }
+.cat-spor.task-card.done .task-check-box { background:var(--pk); border-color:var(--pk); }
+
+.cat-genel .task-card::before { background:var(--muted); }
+.cat-genel .task-check-box { border-color:var(--muted); }
+
+.task-check-box {
+  width:22px; height:22px; border-radius:7px;
+  border:2px solid var(--border2);
+  flex-shrink:0; margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.task-check-icon { display:none; }
+.task-card.done .task-check-icon { display:block; }
+
+.task-body { flex:1; min-width:0; }
+.task-time-badge {
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px; font-weight:600;
+  color:var(--muted); margin-bottom:4px;
+  display:flex; align-items:center; gap:6px;
+}
+.cat-dot {
+  width:6px; height:6px; border-radius:50%; flex-shrink:0;
+}
+.task-name { font-size:14px; font-weight:600; line-height:1.3; }
+.task-detail { font-size:12px; color:var(--muted); margin-top:3px; }
+
+/* CAT DOT COLORS */
+.cd-edb { background:var(--p); }
+.cd-fen { background:var(--t); }
+.cd-mat { background:var(--g); }
+.cd-tytmat { background:var(--g2); }
+.cd-turkce { background:var(--bl); }
+.cd-tarih { background:var(--o); }
+.cd-deneme-tyt, .cd-deneme-ayt { background:var(--r); }
+.cd-spor { background:var(--pk); }
+.cd-genel { background:var(--muted); }
+
+/* EMPTY */
+.empty-state {
+  display:flex; flex-direction:column; align-items:center;
+  padding:60px 20px; color:var(--muted);
+}
+.empty-emoji { font-size:48px; margin-bottom:12px; }
+.empty-text { font-size:14px; text-align:center; line-height:1.6; }
+
+/* HAFTALIK */
+.week-card {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:18px; padding:16px;
+  margin-bottom:12px;
+}
+.week-card-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:14px;
+}
+.week-title { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; }
+.week-sub { font-size:11px; color:var(--muted); margin-top:2px; }
+.week-pct {
+  font-family:'JetBrains Mono',monospace;
+  font-size:22px; font-weight:600;
+}
+.day-bars { display:flex; gap:5px; align-items:flex-end; margin-bottom:8px; }
+.day-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+.day-bar-bg {
+  width:100%; height:56px;
+  background:var(--s3); border-radius:6px;
+  overflow:hidden; display:flex; align-items:flex-end;
+}
+.day-bar-fill { width:100%; border-radius:6px; transition:height 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.day-bar-label { font-size:9px; color:var(--muted); font-weight:600; }
+.day-bar-pct { font-size:9px; font-family:'JetBrains Mono',monospace; }
+
+/* DENEMELER */
+.stats-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+.stat-mini {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:16px; padding:14px;
+}
+.stat-mini-label { font-size:11px; color:var(--muted); margin-bottom:6px; }
+.stat-mini-val {
+  font-family:'Syne',sans-serif; font-size:26px; font-weight:800; line-height:1;
+}
+.stat-p { color:var(--p2); }
+.stat-t { color:var(--t2); }
+.stat-g { color:var(--g2); }
+.stat-o { color:var(--o2); }
+
+.add-btn {
+  width:100%; padding:14px;
+  background:linear-gradient(135deg, var(--p), #7c3aed);
+  border:none; border-radius:14px;
+  color:white; font-family:'Syne',sans-serif;
+  font-size:15px; font-weight:700;
+  cursor:pointer; margin-bottom:16px;
+  transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(139,92,246,0.35);
+}
+.add-btn:active { transform:scale(0.97); }
+
+/* MODAL */
+.modal-overlay {
+  position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(8px);
+  display:none; align-items:flex-end;
+  padding:0;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  width:100%; max-width:480px; margin:0 auto;
+  background:var(--s1);
+  border:1px solid var(--border2);
+  border-radius:24px 24px 0 0;
+  padding:20px 20px 40px;
+  max-height:90vh; overflow-y:auto;
+  animation:slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes slideUp {
+  from { transform:translateY(100%); }
+  to { transform:translateY(0); }
+}
+.modal-handle {
+  width:36px; height:4px; border-radius:2px;
+  background:var(--s4); margin:0 auto 16px;
+}
+.modal-title {
+  font-family:'Syne',sans-serif; font-size:18px; font-weight:700;
+  margin-bottom:16px;
+}
+.form-group { margin-bottom:12px; }
+.form-label { font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px; display:block; }
+.form-input, .form-select {
+  width:100%; padding:12px 14px;
+  background:var(--s3); border:1px solid var(--border2);
+  border-radius:12px; color:var(--text);
+  font-family:'DM Sans',sans-serif; font-size:14px;
+  outline:none; transition:border 0.2s;
+}
+.form-input:focus, .form-select:focus { border-color:var(--p); }
+.form-input::placeholder { color:var(--muted2); }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.form-submit {
+  width:100%; padding:14px;
+  background:linear-gradient(135deg, var(--p), #7c3aed);
+  border:none; border-radius:12px;
+  color:white; font-family:'Syne',sans-serif;
+  font-size:15px; font-weight:700; cursor:pointer;
+  margin-top:6px; transition:all 0.2s;
+}
+.form-submit:active { transform:scale(0.97); }
+
+/* DENEME CARD */
+.deneme-card {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:16px; padding:14px 16px; margin-bottom:10px;
+}
+.deneme-card-top {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:12px;
+}
+.type-badge {
+  font-size:11px; font-weight:700; padding:4px 10px;
+  border-radius:20px; letter-spacing:0.3px;
+}
+.badge-tyt { background:var(--tdim); color:var(--t2); border:1px solid rgba(6,182,212,0.2); }
+.badge-ayt { background:var(--pdim); color:var(--p2); border:1px solid rgba(139,92,246,0.2); }
+.deneme-date { font-size:11px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+.net-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+.net-cell {
+  background:var(--s3); border-radius:10px;
+  padding:8px 6px; text-align:center;
+}
+.net-cell-label { font-size:9px; color:var(--muted); display:block; margin-bottom:3px; }
+.net-cell-val {
+  font-family:'JetBrains Mono',monospace; font-size:15px; font-weight:700;
+}
+.net-good { color:var(--g2); }
+.net-mid { color:var(--o2); }
+.net-low { color:var(--r2); }
+.net-span2 { grid-column:span 2; }
+.del-btn {
+  background:none; border:none; color:var(--muted2);
+  cursor:pointer; font-size:14px; padding:4px;
+  transition:color 0.2s;
+}
+.del-btn:hover { color:var(--r2); }
+.deneme-note { font-size:12px; color:var(--muted); margin-top:8px; font-style:italic; }
+
+/* HEDEFLER */
+.hedef-card {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:16px; padding:16px; margin-bottom:10px;
+}
+.hedef-row {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:10px;
+}
+.hedef-name { font-size:14px; font-weight:600; }
+.hedef-nums { font-family:'JetBrains Mono',monospace; font-size:13px; }
+.hedef-bar-bg { height:8px; background:var(--s4); border-radius:4px; overflow:hidden; position:relative; }
+.hedef-bar-fill { height:100%; border-radius:4px; transition:width 0.6s cubic-bezier(0.34,1.56,0.64,1); }
+.hedef-marker {
+  position:absolute; top:-2px; width:3px; height:12px;
+  border-radius:2px; opacity:0.8;
+}
+.hedef-labels {
+  display:flex; justify-content:space-between;
+  font-size:10px; color:var(--muted2); margin-top:5px;
+  font-family:'JetBrains Mono',monospace;
+}
+
+/* PROGRAM KONU */
+.konu-section {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:16px; padding:14px; margin-top:16px;
+}
+.konu-title {
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:700;
+  margin-bottom:12px; color:var(--p2);
+}
+.konu-item {
+  display:flex; gap:10px; padding:8px 0;
+  border-bottom:1px solid var(--border); font-size:13px;
+}
+.konu-item:last-child { border-bottom:none; }
+.konu-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+.konu-week { font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace; margin-top:2px; }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:80px; left:50%;
+  transform:translateX(-50%) translateY(10px);
+  background:var(--s3); border:1px solid var(--border2);
+  color:var(--text); padding:10px 18px;
+  border-radius:20px; font-size:13px; font-weight:500;
+  z-index:300; opacity:0;
+  transition:all 0.25s; pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* SECTION TITLE */
+.section-title {
+  font-size:11px; font-weight:700; letter-spacing:1px;
+  color:var(--muted2); text-transform:uppercase;
+  margin:18px 0 10px;
+}
+
+/* BOTTOM NAV SAFE AREA */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .page { padding-bottom:calc(100px + env(safe-area-inset-bottom)); }
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-top">
+    <div class="header-logo">S<span>erhan</span> YKS</div>
+    <div class="header-streak" id="streak-badge">🔥 <span id="streak-num">0</span> gün</div>
+  </div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('gunluk',this)">
+      <span class="tab-icon">📅</span>Günlük
+    </button>
+    <button class="nav-tab" onclick="showPage('haftalik',this)">
+      <span class="tab-icon">📊</span>Haftalık
+    </button>
+    <button class="nav-tab" onclick="showPage('denemeler',this)">
+      <span class="tab-icon">📝</span>Denemeler
+    </button>
+    <button class="nav-tab" onclick="showPage('hedefler',this)">
+      <span class="tab-icon">🎯</span>Hedefler
+    </button>
+  </nav>
+</header>
+
+<!-- GÜNLÜK -->
+<div class="page active" id="page-gunluk">
+  <div class="date-nav">
+    <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
+    <div class="date-center">
+      <div class="date-main" id="date-main">--</div>
+      <div class="date-day" id="date-day">--</div>
+    </div>
+    <button class="date-nav-btn" onclick="changeDay(1)">›</button>
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-top">
+      <div>
+        <div class="progress-label">Bugünkü İlerleme</div>
+        <div class="progress-num" id="prog-done">0</div>
+        <div class="progress-sub" id="prog-total">/ 0 görev</div>
+      </div>
+      <div class="progress-circle-wrap">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+          <circle id="prog-circle" cx="32" cy="32" r="26" fill="none"
+            stroke="url(#pg)" stroke-width="6" stroke-linecap="round"
+            stroke-dasharray="163.4" stroke-dashoffset="163.4" transition="stroke-dashoffset 0.5s ease"/>
+          <defs>
+            <linearGradient id="pg" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#8b5cf6"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="progress-circle-text" id="prog-pct">0%</div>
+      </div>
+    </div>
+    <div class="progress-bar-row">
+      <div class="progress-bar-fill" id="prog-bar" style="width:0%"></div>
+    </div>
+    <div class="progress-chips">
+      <span class="chip chip-done" id="chip-done">✓ 0 tamamlandı</span>
+      <span class="chip chip-rem" id="chip-rem">⏳ 0 kaldı</span>
+    </div>
+  </div>
+
+  <div id="task-list"></div>
+</div>
+
+<!-- HAFTALIK -->
+<div class="page" id="page-haftalik">
+  <div class="section-title">4 Haftalık Genel Bakış</div>
+  <div id="week-grid"></div>
+</div>
+
+<!-- DENEMELER -->
+<div class="page" id="page-denemeler">
+  <div class="stats-row">
+    <div class="stat-mini">
+      <div class="stat-mini-label">Toplam Deneme</div>
+      <div class="stat-mini-val stat-p" id="stat-total">0</div>
+    </div>
+    <div class="stat-mini">
+      <div class="stat-mini-label">Son TYT Toplam</div>
+      <div class="stat-mini-val stat-t" id="stat-tyt">—</div>
+    </div>
+    <div class="stat-mini">
+      <div class="stat-mini-label">Son AYT Edebiyat</div>
+      <div class="stat-mini-val stat-g" id="stat-edb">—</div>
+    </div>
+    <div class="stat-mini">
+      <div class="stat-mini-label">Son AYT Matematik</div>
+      <div class="stat-mini-val stat-o" id="stat-aytmat">—</div>
+    </div>
+  </div>
+
+  <button class="add-btn" onclick="openModal()">+ Yeni Deneme Ekle</button>
+
+  <div class="section-title">Geçmiş Denemeler</div>
+  <div id="deneme-list"></div>
+</div>
+
+<!-- HEDEFLER -->
+<div class="page" id="page-hedefler">
+  <div class="section-title">Net Hedefleri</div>
+  <div id="hedef-grid"></div>
+
+  <div class="section-title">Konu Planı</div>
+  <div class="konu-section">
+    <div class="konu-title" style="color:var(--p2);">AYT Edebiyat</div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--p)"></div><div><div>Şiir Bilgisi</div><div class="konu-week">1. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--p)"></div><div><div>Halk Edebiyatı + Divan Edebiyatı</div><div class="konu-week">2. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--p)"></div><div><div>Tanzimat + Servet-i Fünun</div><div class="konu-week">3. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--p)"></div><div><div>Milli Edebiyat + Cumhuriyet + İlkler</div><div class="konu-week">4. Hafta</div></div></div>
+  </div>
+  <div class="konu-section" style="margin-top:10px;">
+    <div class="konu-title" style="color:var(--t2);">TYT Fen</div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--t)"></div><div><div>Isı-Sıcaklık + Maddenin Halleri</div><div class="konu-week">1. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--t)"></div><div><div>Dalgalar + Kimya Bilimine Giriş</div><div class="konu-week">2. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--t)"></div><div><div>Karışımlar + Atom ve Periyodik Sistem</div><div class="konu-week">3. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--t)"></div><div><div>Hücre + Mitoz/Mayoz + Kalıtım</div><div class="konu-week">4. Hafta</div></div></div>
+  </div>
+  <div class="konu-section" style="margin-top:10px;">
+    <div class="konu-title" style="color:var(--g2);">AYT Matematik</div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--g)"></div><div><div>Türev</div><div class="konu-week">1-2. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--g)"></div><div><div>Trigonometri + Parabol + Limit + Katı Cisimler</div><div class="konu-week">2-3. Hafta</div></div></div>
+    <div class="konu-item"><div class="konu-dot" style="background:var(--g)"></div><div><div>Analitik Geometri + Eşitsizlik + Genel Tekrar</div><div class="konu-week">4. Hafta</div></div></div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Yeni Deneme Ekle</div>
+    <div class="form-group">
+      <label class="form-label">Deneme Türü</label>
+      <select class="form-select" id="d-type" onchange="toggleFields()">
+        <option value="tyt">TYT Genel</option>
+        <option value="ayt">AYT Genel</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tarih</label>
+      <input type="date" class="form-input" id="d-date">
+    </div>
+    <div id="tyt-fields">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Türkçe Net</label><input type="number" class="form-input" id="d-turkce" placeholder="0" min="0" max="40" step="0.25"></div>
+        <div class="form-group"><label class="form-label">Matematik Net</label><input type="number" class="form-input" id="d-tytmat" placeholder="0" min="0" max="40" step="0.25"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Fen Net</label><input type="number" class="form-input" id="d-fen" placeholder="0" min="0" max="20" step="0.25"></div>
+        <div class="form-group"><label class="form-label">Sosyal Net</label><input type="number" class="form-input" id="d-sosyal" placeholder="0" min="0" max="20" step="0.25"></div>
+      </div>
+    </div>
+    <div id="ayt-fields" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Edebiyat Net</label><input type="number" class="form-input" id="d-edb" placeholder="0" min="0" max="24" step="0.25"></div>
+        <div class="form-group"><label class="form-label">AYT Mat Net</label><input type="number" class="form-input" id="d-aytmat" placeholder="0" min="0" max="40" step="0.25"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Tarih Net</label><input type="number" class="form-input" id="d-tarih" placeholder="0" min="0" max="10" step="0.25"></div>
+        <div class="form-group"><label class="form-label">Coğrafya Net</label><input type="number" class="form-input" id="d-cografya" placeholder="0" min="0" max="6" step="0.25"></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Not (isteğe bağlı)</label>
+      <input type="text" class="form-input" id="d-note" placeholder="Nasıl geçti?">
+    </div>
+    <button class="form-submit" onclick="saveDeneme()">Kaydet</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PROGRAM_START = new Date('2026-03-23');
+const PROGRAM_END   = new Date('2026-04-19');
+
+const CAT_META = {
+  edb:        { label:'AYT Edebiyat',    cd:'cd-edb',   order:1 },
+  fen:        { label:'TYT Fen',         cd:'cd-fen',   order:4 },
+  mat:        { label:'AYT Matematik',   cd:'cd-mat',   order:5 },
+  tytmat:     { label:'TYT Matematik',   cd:'cd-tytmat',order:3 },
+  turkce:     { label:'TYT Türkçe',      cd:'cd-turkce',order:2 },
+  tarih:      { label:'Tarih-Coğrafya',  cd:'cd-tarih', order:6 },
+  'deneme-tyt':{ label:'TYT Genel Deneme',cd:'cd-deneme-tyt',order:7 },
+  'deneme-ayt':{ label:'AYT Genel Deneme',cd:'cd-deneme-ayt',order:7 },
+  spor:       { label:'Spor',            cd:'cd-spor',  order:8 },
+  genel:      { label:'Genel',           cd:'cd-genel', order:9 },
+};
+
+// Saat çözümleyici (sıralama için)
+function parseTime(t) {
+  if (!t) return 999;
+  const m = t.match(/^(\d+):(\d+)/);
+  if (m) return parseInt(m[1])*60 + parseInt(m[2]);
+  if (t.startsWith('Okul Etüt 1-2')) return 480;
+  if (t.startsWith('Okul Etüt 1')) return 480;
+  if (t.startsWith('Okul Etüt 2')) return 520;
+  if (t.startsWith('Okul Etüt 3')) return 560;
+  if (t.startsWith('Okuldan')) return 600;
+  return 700;
+}
+
+const PROG = {};
+function day(k, slots) { PROG[k] = slots.sort((a,b)=>parseTime(a.t)-parseTime(b.t)); }
+function s(t,c,n,d){return{t,c,n,d};}
+
+day('2026-03-23',[
+  s('05:00–07:00','edb','AYT Edebiyat – Şiir Bilgisi','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1-2','mat','AYT Matematik – Soru Çözümü','Bilgi Sarmal'),
+  s('Okul Etüt 3','edb','AYT Edebiyat – Soru Çözümü','Limit El Kitabı'),
+  s('Okuldan Sonra','deneme-tyt','TYT Genel Deneme','Tam Deneme + Analiz'),
+  s('20:00–22:00','fen','TYT Fen – Isı ve Sıcaklık','Konu Anlatımı (YouTube)'),
+]);
+day('2026-03-24',[
+  s('05:00–07:00','edb','AYT Edebiyat – Şiir Bilgisi','Konu devam (Kadir Gümüş)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü','3D AYT'),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Isı ve Sıcaklık','Soru Çözümü (YouTube)'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Türev','Konu Anlatımı (3D AYT)'),
+]);
+day('2026-03-25',[
+  s('05:00–07:00','edb','AYT Edebiyat – Şiir Bilgisi','Soru Çözümü (Limit El Kitabı)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Maddenin Halleri','Konu Anlatımı (YouTube)'),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Türev','Konu devam'),
+]);
+day('2026-03-26',[
+  s('05:00–07:00','edb','AYT Edebiyat – Şiir Bilgisi','Tekrar + Soru'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Maddenin Halleri','Soru Çözümü (YouTube)'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Türev','Soru Çözümü (Bilgi Sarmal)'),
+]);
+day('2026-03-27',[
+  s('05:00–07:00','edb','AYT Edebiyat – Halk Edebiyatı','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Dalgalar','Konu Anlatımı (YouTube)'),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Türev','Konu devam'),
+]);
+day('2026-03-28',[
+  s('09:00–11:00','tarih','TYT Coğrafya','Konu Anlatımı (Yusuf Mer Aslan)'),
+  s('11:00–13:00','edb','AYT Edebiyat – Halk Edebiyatı','Konu devam'),
+  s('14:00–16:00','fen','TYT Fen – Dalgalar','Soru Çözümü (YouTube)'),
+  s('16:00–18:00','mat','AYT Matematik – Soru Çözümü','Bilgi Sarmal'),
+  s('18:45–20:45','mat','AYT Matematik – Türev','Konu devam'),
+]);
+day('2026-03-29',[
+  s('09:00–13:00','deneme-ayt','AYT Genel Deneme','Tam Deneme + Analiz'),
+  s('13:00–15:00','spor','Spor – Basketbol',''),
+  s('15:00–17:00','tarih','TYT Coğrafya','Konu devam'),
+  s('17:00–19:00','fen','TYT Fen – Kimya Bilimine Giriş','Konu Anlatımı (YouTube)'),
+]);
+day('2026-03-30',[
+  s('05:00–07:00','edb','AYT Edebiyat – Halk Edebiyatı','Soru Çözümü (Limit El Kitabı)'),
+  s('Okul Etüt 1-2','mat','AYT Matematik – Soru Çözümü','Bilgi Sarmal'),
+  s('Okul Etüt 3','edb','AYT Edebiyat – Soru Çözümü',''),
+  s('Okuldan Sonra','deneme-tyt','TYT Genel Deneme','Tam Deneme + Analiz'),
+  s('20:00–22:00','fen','TYT Fen – Kimya Bilimine Giriş','Soru Çözümü (YouTube)'),
+]);
+day('2026-03-31',[
+  s('05:00–07:00','edb','AYT Edebiyat – Divan Edebiyatı','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Karışımlar','Konu Anlatımı (YouTube)'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Türev Bitiş + Trigonometri',''),
+]);
+day('2026-04-01',[
+  s('05:00–07:00','edb','AYT Edebiyat – Divan Edebiyatı','Soru Çözümü'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Karışımlar','Soru Çözümü (YouTube)'),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Trigonometri','Detaylı Tekrar'),
+]);
+day('2026-04-02',[
+  s('05:00–07:00','edb','AYT Edebiyat – Tanzimat 1. Dönem','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Atom ve Periyodik Sistem','Konu Anlatımı'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Trigonometri','Soru Çözümü (Bilgi Sarmal)'),
+]);
+day('2026-04-03',[
+  s('05:00–07:00','edb','AYT Edebiyat – Tanzimat 1. Dönem','Soru Çözümü'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Atom ve Periyodik Sistem','Soru Çözümü'),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Trigonometri','Tekrar + Soru'),
+]);
+day('2026-04-04',[
+  s('09:00–11:00','tarih','TYT Coğrafya Bitiş + TYT Tarih','Yusuf Mer Aslan'),
+  s('11:00–13:00','edb','AYT Edebiyat – Tanzimat 2. Dönem','Konu Anlatımı'),
+  s('14:00–16:00','fen','TYT Fen – Hücre','Konu Anlatımı (YouTube)'),
+  s('16:00–18:00','mat','AYT Matematik – Soru Çözümü','Bilgi Sarmal'),
+  s('18:45–20:45','mat','AYT Matematik – Parabol','Konu Anlatımı (3D AYT)'),
+]);
+day('2026-04-05',[
+  s('09:00–13:00','deneme-ayt','AYT Genel Deneme','Tam Deneme + Analiz'),
+  s('13:00–15:00','spor','Spor – Basketbol',''),
+  s('15:00–17:00','tarih','TYT Tarih','Konu devam'),
+  s('17:00–19:00','fen','TYT Fen – Hücre','Soru Çözümü (YouTube)'),
+]);
+day('2026-04-06',[
+  s('05:00–07:00','edb','AYT Edebiyat – Servet-i Fünun','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1-2','mat','AYT Matematik – Soru Çözümü','Bilgi Sarmal'),
+  s('Okul Etüt 3','edb','AYT Edebiyat – Soru Çözümü',''),
+  s('Okuldan Sonra','deneme-tyt','TYT Genel Deneme','Tam Deneme + Analiz'),
+  s('20:00–22:00','fen','TYT Fen – Mitoz/Mayoz','Konu Anlatımı (YouTube)'),
+]);
+day('2026-04-07',[
+  s('05:00–07:00','edb','AYT Edebiyat – Servet-i Fünun','Soru Çözümü'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Mitoz/Mayoz','Soru Çözümü (YouTube)'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Parabol','Soru Çözümü (Bilgi Sarmal)'),
+]);
+day('2026-04-08',[
+  s('05:00–07:00','edb','AYT Edebiyat – Milli Edebiyat','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Kalıtım','Konu Anlatımı (YouTube)'),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Limit','Konu Anlatımı (3D AYT)'),
+]);
+day('2026-04-09',[
+  s('05:00–07:00','edb','AYT Edebiyat – Milli Edebiyat','Soru Çözümü'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Kalıtım','Soru Çözümü (YouTube)'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Limit','Soru Çözümü (Bilgi Sarmal)'),
+]);
+day('2026-04-10',[
+  s('05:00–07:00','edb','AYT Edebiyat – Cumhuriyet Dönemi','Konu Anlatımı (Kadir Gümüş)'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Genel Tekrar',''),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Limit','Tekrar + Karma Soru'),
+]);
+day('2026-04-11',[
+  s('09:00–11:00','tarih','TYT Tarih','Konu devam (Yusuf Mer Aslan)'),
+  s('11:00–13:00','edb','AYT Edebiyat – Cumhuriyet Dönemi','Soru Çözümü'),
+  s('14:00–16:00','fen','TYT Fen – Genel Tekrar',''),
+  s('16:00–18:00','mat','AYT Matematik – Katı Cisimler','Konu Anlatımı (3D AYT)'),
+  s('18:45–20:45','mat','AYT Matematik – Katı Cisimler','Soru Çözümü'),
+]);
+day('2026-04-12',[
+  s('09:00–13:00','deneme-ayt','AYT Genel Deneme','Tam Deneme + Analiz'),
+  s('13:00–15:00','spor','Spor – Basketbol',''),
+  s('15:00–17:00','tarih','TYT Tarih','Konu devam'),
+  s('17:00–19:00','fen','TYT Fen – Genel Tekrar',''),
+]);
+day('2026-04-13',[
+  s('05:00–07:00','edb','AYT Edebiyat – Türk Edb. İlkleri','Konu + Soru (Kadir Gümüş)'),
+  s('Okul Etüt 1-2','mat','AYT Matematik – Soru Çözümü','Bilgi Sarmal'),
+  s('Okul Etüt 3','edb','AYT Edebiyat – Soru Çözümü',''),
+  s('Okuldan Sonra','deneme-tyt','TYT Genel Deneme','Tam Deneme + Analiz'),
+  s('20:00–22:00','fen','TYT Fen – Eksik Konu Tekrarı',''),
+]);
+day('2026-04-14',[
+  s('05:00–07:00','edb','AYT Edebiyat – Genel Tekrar','Tüm Dönemler'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Genel Tekrar','Karma Soru'),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Analitik Geometri','Konu Anlatımı (3D AYT)'),
+]);
+day('2026-04-15',[
+  s('05:00–07:00','edb','AYT Edebiyat – Karma Soru','Limit El Kitabı'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Karma Soru',''),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Analitik Geometri','Soru Çözümü'),
+]);
+day('2026-04-16',[
+  s('05:00–07:00','edb','AYT Edebiyat – Karma + Zayıf Konu','Tekrar'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Karma Soru',''),
+  s('18:00–18:45','spor','Spor – Zıplama Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Eşitsizlik','Konu + Soru'),
+]);
+day('2026-04-17',[
+  s('05:00–07:00','edb','AYT Edebiyat – Son Tekrar','Tüm Konular'),
+  s('Okul Etüt 1','tytmat','TYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 2','mat','AYT Matematik – Soru Çözümü',''),
+  s('Okul Etüt 3','turkce','TYT Türkçe – Branş Deneme',''),
+  s('16:00–18:00','fen','TYT Fen – Son Tekrar',''),
+  s('18:00–18:45','spor','Spor – Vücut Antrenmanı',''),
+  s('18:45–20:45','mat','AYT Matematik – Genel Tekrar','Karma Soru'),
+]);
+day('2026-04-18',[
+  s('09:00–11:00','tarih','TYT Tarih Bitiş + Genel Tekrar','Yusuf Mer Aslan'),
+  s('11:00–13:00','edb','AYT Edebiyat – Son Karma Soru',''),
+  s('14:00–16:00','fen','TYT Fen – Son Tekrar',''),
+  s('16:00–18:00','mat','AYT Matematik – Karma Soru','Bilgi Sarmal'),
+  s('18:45–20:45','mat','AYT Matematik – Genel Tekrar',''),
+]);
+day('2026-04-19',[
+  s('09:00–13:00','deneme-ayt','AYT Genel Deneme','Tam Deneme + Kapsamlı Analiz'),
+  s('13:00–15:00','spor','Spor – Basketbol',''),
+  s('15:00–17:00','genel','Tüm Dersler – Eksik Konu Tespiti','2. Ay Planlaması'),
+  s('17:00–19:00','fen','TYT Fen – Son Değerlendirme',''),
+]);
+
+// ===== STATE =====
+let currentDate = new Date();
+if(currentDate < PROGRAM_START) currentDate = new Date(PROGRAM_START);
+if(currentDate > PROGRAM_END) currentDate = new Date(PROGRAM_END);
+
+const dk=d=>d.toISOString().split('T')[0];
+const loadS=()=>{try{return JSON.parse(localStorage.getItem('yks26')||'{}')}catch{return{}}};
+const saveS=o=>localStorage.setItem('yks26',JSON.stringify(o));
+const loadD=()=>{try{return JSON.parse(localStorage.getItem('yks26d')||'[]')}catch{return[]}};
+const saveD=a=>localStorage.setItem('yks26d',JSON.stringify(a));
+
+// ===== STREAK =====
+function calcStreak(){
+  const st=loadS(); let streak=0;
+  let d=new Date(currentDate);
+  while(true){
+    const k=dk(d);
+    const slots=PROG[k]||[];
+    if(!slots.length){d.setDate(d.getDate()-1);if(d<PROGRAM_START)break;continue;}
+    const ds=st[k]||{};
+    const done=slots.filter((_,i)=>ds[i]).length;
+    if(done===slots.length&&slots.length>0) streak++;
+    else break;
+    d.setDate(d.getDate()-1);
+    if(d<PROGRAM_START) break;
+  }
+  document.getElementById('streak-num').textContent=streak;
+}
+
+// ===== RENDER GÜNLÜK =====
+const AYLAR=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const GUNLER=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+
+function renderGunluk(){
+  const k=dk(currentDate);
+  const slots=PROG[k]||[];
+  const st=loadS(); const ds=st[k]||{};
+
+  document.getElementById('date-main').textContent=
+    `${currentDate.getDate()} ${AYLAR[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+  document.getElementById('date-day').textContent=GUNLER[currentDate.getDay()];
+
+  const total=slots.length;
+  const done=slots.filter((_,i)=>ds[i]).length;
+  const pct=total?Math.round(done/total*100):0;
+
+  document.getElementById('prog-done').textContent=done;
+  document.getElementById('prog-total').textContent=`/ ${total} görev`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('chip-done').textContent=`✓ ${done} tamamlandı`;
+  document.getElementById('chip-rem').textContent=`⏳ ${total-done} kaldı`;
+
+  // Circle
+  const circ=2*Math.PI*26;
+  const offset=circ*(1-pct/100);
+  document.getElementById('prog-circle').style.strokeDashoffset=offset;
+
+  if(!slots.length){
+    document.getElementById('task-list').innerHTML=
+      `<div class="empty-state"><div class="empty-emoji">📅</div><div class="empty-text">Bu gün için program yok</div></div>`;
+    return;
+  }
+
+  let html='';
+  slots.forEach((slot,i)=>{
+    const isDone=!!ds[i];
+    const cat=slot.c;
+    html+=`<div class="task-card cat-${cat} ${isDone?'done':''}" onclick="toggle('${k}',${i})">
+      <div class="task-check-box">
+        <svg class="task-check-icon" width="12" height="10" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-time-badge">
+          <div class="cat-dot ${CAT_META[cat]?.cd||'cd-genel'}"></div>
+          ${slot.t}
+        </div>
+        <div class="task-name">${slot.n}</div>
+        ${slot.d?`<div class="task-detail">${slot.d}</div>`:''}
+      </div>
+    </div>`;
+  });
+  document.getElementById('task-list').innerHTML=html;
+}
+
+function toggle(k,i){
+  const st=loadS();
+  if(!st[k]) st[k]={};
+  st[k][i]=!st[k][i];
+  saveS(st);
+  renderGunluk();
+  calcStreak();
+  toast(st[k][i]?'Tamamlandı! 💪':'Geri alındı');
+}
+
+function changeDay(d){
+  const n=new Date(currentDate);
+  n.setDate(n.getDate()+d);
+  if(n>=PROGRAM_START&&n<=PROGRAM_END){currentDate=n;renderGunluk();}
+}
+
+// ===== HAFTALIK =====
+function renderHaftalik(){
+  const st=loadS();
+  const weeks=[
+    {l:'1. Hafta',s:'23–29 Mart',c:'#8b5cf6',
+     days:['2026-03-23','2026-03-24','2026-03-25','2026-03-26','2026-03-27','2026-03-28','2026-03-29']},
+    {l:'2. Hafta',s:'30 Mart – 5 Nisan',c:'#06b6d4',
+     days:['2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03','2026-04-04','2026-04-05']},
+    {l:'3. Hafta',s:'6–12 Nisan',c:'#10b981',
+     days:['2026-04-06','2026-04-07','2026-04-08','2026-04-09','2026-04-10','2026-04-11','2026-04-12']},
+    {l:'4. Hafta',s:'13–19 Nisan',c:'#f59e0b',
+     days:['2026-04-13','2026-04-14','2026-04-15','2026-04-16','2026-04-17','2026-04-18','2026-04-19']},
+  ];
+  const gl=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
+
+  let html='';
+  weeks.forEach(w=>{
+    let wt=0,wd=0;
+    const bars=w.days.map((d,di)=>{
+      const slots=PROG[d]||[];
+      const ds=st[d]||{};
+      const t=slots.length, done=slots.filter((_,i)=>ds[i]).length;
+      wt+=t; wd+=done;
+      const pct=t?Math.round(done/t*100):0;
+      return `<div class="day-bar-wrap">
+        <div class="day-bar-bg">
+          <div class="day-bar-fill" style="height:${pct}%;background:${w.c};"></div>
+        </div>
+        <div class="day-bar-label">${gl[di]}</div>
+        <div class="day-bar-pct" style="color:${w.c}">${pct}%</div>
+      </div>`;
+    }).join('');
+    const wpct=wt?Math.round(wd/wt*100):0;
+    html+=`<div class="week-card">
+      <div class="week-card-header">
+        <div>
+          <div class="week-title">${w.l}</div>
+          <div class="week-sub">${w.s} · ${wd}/${wt} görev</div>
+        </div>
+        <div class="week-pct" style="color:${w.c}">${wpct}%</div>
+      </div>
+      <div class="day-bars">${bars}</div>
+    </div>`;
+  });
+  document.getElementById('week-grid').innerHTML=html;
+}
+
+// ===== DENEMELER =====
+function openModal(){
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('d-date').value=new Date().toISOString().split('T')[0];
+}
+function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal();}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+function toggleFields(){
+  const t=document.getElementById('d-type').value;
+  document.getElementById('tyt-fields').style.display=t==='tyt'?'':'none';
+  document.getElementById('ayt-fields').style.display=t==='ayt'?'':'none';
+}
+const gn=id=>parseFloat(document.getElementById(id).value)||0;
+function saveDeneme(){
+  const type=document.getElementById('d-type').value;
+  const date=document.getElementById('d-date').value;
+  if(!date){toast('Tarih seç!');return;}
+  const arr=loadD();
+  const e={id:Date.now(),type,date,note:document.getElementById('d-note').value};
+  if(type==='tyt'){
+    e.turkce=gn('d-turkce');e.tytmat=gn('d-tytmat');
+    e.fen=gn('d-fen');e.sosyal=gn('d-sosyal');
+    e.toplam=e.turkce+e.tytmat+e.fen+e.sosyal;
+  } else {
+    e.edb=gn('d-edb');e.aytmat=gn('d-aytmat');
+    e.tarih=gn('d-tarih');e.cografya=gn('d-cografya');
+    e.sozel=e.edb+e.tarih+e.cografya;
+    e.toplam=e.sozel+e.aytmat;
+  }
+  arr.unshift(e); saveD(arr);
+  closeModal(); renderDenemeler();
+  toast('Deneme kaydedildi! 📊');
+  ['d-turkce','d-tytmat','d-fen','d-sosyal','d-edb','d-aytmat','d-tarih','d-cografya','d-note'].forEach(id=>document.getElementById(id).value='');
+}
+function delDeneme(id){
+  saveD(loadD().filter(d=>d.id!==id));
+  renderDenemeler(); toast('Silindi');
+}
+function nc(v,lo,hi){return v>=hi?'net-good':v>=lo?'net-mid':'net-low';}
+function renderDenemeler(){
+  const arr=loadD();
+  const tyts=arr.filter(d=>d.type==='tyt');
+  const ayts=arr.filter(d=>d.type==='ayt');
+  document.getElementById('stat-total').textContent=arr.length;
+  document.getElementById('stat-tyt').textContent=tyts.length?tyts[0].toplam.toFixed(1):'—';
+  document.getElementById('stat-edb').textContent=ayts.length?ayts[0].edb.toFixed(1):'—';
+  document.getElementById('stat-aytmat').textContent=ayts.length?ayts[0].aytmat.toFixed(1):'—';
+  if(!arr.length){
+    document.getElementById('deneme-list').innerHTML=
+      `<div class="empty-state"><div class="empty-emoji">📝</div><div class="empty-text">Henüz deneme yok<br>Eklemek için butona bas</div></div>`;
+    return;
+  }
+  document.getElementById('deneme-list').innerHTML=arr.map(d=>{
+    const dateStr=d.date?new Date(d.date+'T12:00').toLocaleDateString('tr-TR',{day:'numeric',month:'long'}):'';
+    let nets='';
+    if(d.type==='tyt'){
+      nets=`
+        <div class="net-cell"><span class="net-cell-label">Türkçe</span><span class="net-cell-val ${nc(d.turkce,28,34)}">${d.turkce.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">TYT Mat</span><span class="net-cell-val ${nc(d.tytmat,22,28)}">${d.tytmat.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">Fen</span><span class="net-cell-val ${nc(d.fen,8,12)}">${d.fen.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">Sosyal</span><span class="net-cell-val ${nc(d.sosyal,14,17)}">${d.sosyal.toFixed(1)}</span></div>
+        <div class="net-cell net-span2"><span class="net-cell-label">Toplam</span><span class="net-cell-val ${nc(d.toplam,80,100)}" style="font-size:18px">${d.toplam.toFixed(1)}</span></div>`;
+    } else {
+      nets=`
+        <div class="net-cell"><span class="net-cell-label">Edebiyat</span><span class="net-cell-val ${nc(d.edb,16,20)}">${d.edb.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">AYT Mat</span><span class="net-cell-val ${nc(d.aytmat,16,22)}">${d.aytmat.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">Tarih</span><span class="net-cell-val ${nc(d.tarih,6,8)}">${d.tarih.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">Coğrafya</span><span class="net-cell-val ${nc(d.cografya,3,5)}">${d.cografya.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">Sözel</span><span class="net-cell-val ${nc(d.sozel,22,28)}">${d.sozel.toFixed(1)}</span></div>
+        <div class="net-cell"><span class="net-cell-label">Toplam</span><span class="net-cell-val ${nc(d.toplam,38,50)}" style="font-size:18px">${d.toplam.toFixed(1)}</span></div>`;
+    }
+    return `<div class="deneme-card">
+      <div class="deneme-card-top">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="type-badge ${d.type==='tyt'?'badge-tyt':'badge-ayt'}">${d.type.toUpperCase()}</span>
+          <span class="deneme-date">${dateStr}</span>
+        </div>
+        <button class="del-btn" onclick="delDeneme(${d.id})">✕</button>
+      </div>
+      <div class="net-grid">${nets}</div>
+      ${d.note?`<div class="deneme-note">"${d.note}"</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ===== HEDEFLER =====
+function renderHedefler(){
+  const arr=loadD();
+  const lt=arr.find(d=>d.type==='tyt');
+  const la=arr.find(d=>d.type==='ayt');
+  const hedefler=[
+    {n:'TYT Türkçe', b:32, h:35, mx:40, g:lt?.turkce, c:'#60a5fa'},
+    {n:'TYT Matematik', b:25, h:30, mx:40, g:lt?.tytmat, c:'#34d399'},
+    {n:'TYT Fen', b:5, h:12, mx:20, g:lt?.fen, c:'#22d3ee'},
+    {n:'AYT Edebiyat', b:18, h:20, mx:24, g:la?.edb, c:'#a78bfa'},
+    {n:'AYT Matematik', b:12, h:20, mx:40, g:la?.aytmat, c:'#fb923c'},
+  ];
+  document.getElementById('hedef-grid').innerHTML=hedefler.map(h=>{
+    const gv=h.g!==undefined?h.g:h.b;
+    const pb=h.b/h.mx*100, ph=h.h/h.mx*100, pg=Math.min(gv/h.mx*100,100);
+    const tr=h.g!==undefined?(h.g>h.b?'↑':'↓'):'';
+    const tc=tr==='↑'?'#34d399':tr==='↓'?'#f87171':'';
+    return `<div class="hedef-card">
+      <div class="hedef-row">
+        <div class="hedef-name">${h.n}</div>
+        <div class="hedef-nums">
+          <span style="color:var(--muted)">${h.b}</span>
+          <span style="color:var(--muted);margin:0 4px">→</span>
+          <span style="color:${h.c};font-weight:700">${h.h}</span>
+          ${h.g!==undefined?`<span style="color:${tc};margin-left:8px">${tr} ${h.g.toFixed(1)}</span>`:''}
+        </div>
+      </div>
+      <div class="hedef-bar-bg">
+        <div class="hedef-bar-fill" style="width:${pg}%;background:${h.c}"></div>
+        <div class="hedef-marker" style="left:${ph}%;background:${h.c}"></div>
+      </div>
+      <div class="hedef-labels"><span>0</span><span style="color:${h.c}">hedef: ${h.h}</span><span>${h.mx}</span></div>
+    </div>`;
+  }).join('');
+}
+
+// ===== NAV =====
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='haftalik') renderHaftalik();
+  if(id==='denemeler') renderDenemeler();
+  if(id==='hedefler') renderHedefler();
+}
+
+// ===== TOAST =====
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// INIT
+renderGunluk();
+calcStreak();
+
+// Service Worker kayıt
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
